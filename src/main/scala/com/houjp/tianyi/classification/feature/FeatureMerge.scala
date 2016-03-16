@@ -38,7 +38,7 @@ object FeatureMerge {
 
   def run(p: Params): Unit = {
     val conf = new SparkConf()
-      .setAppName(s"tianyi-final user-active-count")
+      .setAppName(s"tianyi-final feature-merge")
       .set("spark.hadoop.validateOutputSpecs", "false")
     if (tianyi.is_local) {
       conf.setMaster("local[4]")
