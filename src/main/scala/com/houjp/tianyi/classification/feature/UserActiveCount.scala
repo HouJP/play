@@ -11,7 +11,7 @@ object UserActiveCount {
 
   /** command line parameters */
   case class Params(vvd_fp: String = tianyi.project_pt + "/data/raw/video-visit-data.txt.small",
-                    out_fp: String = tianyi.project_pt + "/data/fs/classification/user-active-count.txt",
+                    out_fp: String = tianyi.project_pt + "/data/fs/user-active-count.txt",
                     t_wid: Int = 6,
                     w_len: Int = 5)
 
