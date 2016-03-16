@@ -13,13 +13,13 @@ source ../conf/shell.conf
 cd "${PATH_PRE}"
 
 vvd_fp=${HDFS_PROJECT_PT}/data/raw/video-visit-data.txt
-out_fp=${HDFS_PROJECT_PT}/data/fs/user-active-count.txt
+out_fp=${HDFS_PROJECT_PT}/data/fs/user-vt-first.txt
 t_wid=6
 w_len=5
 
 hdfs dfs -rmr $out_fp
 
-class=com.houjp.tianyi.classification.feature.UserActiveCount
+class=com.houjp.tianyi.classification.feature.UserVTFirst
 
 spark-submit \
 	--class $class \

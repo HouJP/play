@@ -70,6 +70,6 @@ object UserActiveCount {
         (e._1, e._2._2.getOrElse(e._2._1))
     }
 
-    FeatureOpts.save(fs, p.out_fp)
+    FeatureOpts.save(fs_all, p.out_fp)
   }
 }

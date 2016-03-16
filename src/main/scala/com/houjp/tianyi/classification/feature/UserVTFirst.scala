@@ -7,11 +7,11 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.{SparkContext, SparkConf}
 import scopt.OptionParser
 
-object UserVisitCount {
+object UserVTFirst {
 
   /** command line parameters */
   case class Params(vvd_fp: String = tianyi.project_pt + "/data/raw/video-visit-data.txt.small",
-                    out_fp: String = tianyi.project_pt + "/data/fs/user-visit-count.txt",
+                    out_fp: String = tianyi.project_pt + "/data/fs/user-vt-first.txt",
                     t_wid: Int = 6,
                     w_len: Int = 5)
 
@@ -45,7 +45,7 @@ object UserVisitCount {
 
   def run(p: Params): Unit = {
     val conf = new SparkConf()
-      .setAppName(s"tianyi-final user-visit-count")
+      .setAppName(s"tianyi-final user-vt-first")
       .set("spark.hadoop.validateOutputSpecs", "false")
     if (tianyi.is_local) {
       conf.setMaster("local[4]")
@@ -57,10 +57,11 @@ object UserVisitCount {
     val cdd = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, Array.fill[Double](f_len)(0.0)))
     val fs = RawPoint.filter(vvd, p.t_wid, p.w_len).map {
       p =>
-        (p.uid, p.vcnt)
-    }.reduceByKey(_+_).map {
-      e =>
-        (e._1, Array(e._2.toDouble))
+        val t = (p.wid - 1) * (7 * 24 * 60) + (p.did - 1) * (24 * 60) + p.hid * 60 + p.mid
+        (p.uid, t)
+    }.reduceByKey(math.min).map {
+      case (uid: String, t: Int) =>
+        (uid, Array(t.toDouble))
     }
 
     val fs_all = cdd.leftOuterJoin(fs).map {
