@@ -2,3 +2,4 @@ data/
 .idea/
 target/
 project/
+submit.sh
