@@ -20,7 +20,7 @@ w_len=5
 class=com.houjp.tianyi.classification.feature.UserActiveCount
 
 spark-submit \
-	--class $class
+	--class $class \
 	${LOCAL_JAR_FP} \
 	--vvd_fp ${vvd_fp} \
 	--out_fp ${out_fp} \
