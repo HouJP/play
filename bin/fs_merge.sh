@@ -22,7 +22,7 @@ w_len=$2
 fs_pt=${HDFS_PROJECT_PT}/data/fs/
 fs_name=$3
 
-hdfs dfs -rmr ${fs_pt}/${fs_name}.txt
+hdfs dfs -rmr ${fs_pt}/${fs_name}_${t_wid}_${w_len}.txt
 
 class=com.houjp.tianyi.classification.feature.FeatureMerge
 
