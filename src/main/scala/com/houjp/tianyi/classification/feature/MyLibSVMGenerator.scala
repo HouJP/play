@@ -1,17 +1,18 @@
-package com.houjp.tianyi.classification.feature
+package com.houjp.tianyi.classification
 
 import com.houjp.tianyi
-import com.houjp.tianyi.classification.FeatureOpts
+import com.houjp.tianyi.classification.feature.CandidateGenerator
 import com.houjp.tianyi.datastructure.RawPoint
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.{SparkContext, SparkConf}
 import scopt.OptionParser
 
-object UserVTFirst {
+object MyLibSVMGenerator {
 
   /** command line parameters */
   case class Params(vvd_fp: String = tianyi.project_pt + "/data/raw/video-visit-data.txt.small",
-                    out_fp: String = tianyi.project_pt + "/data/fs/user-vt-first_6_5.txt",
+                    out_fp: String = tianyi.project_pt + "/data/fs/mylibsvm_6_5.txt",
+                    fs_fp: String = tianyi.project_pt + "/data/fs/user-vt-first_user-vt-last_6_5.txt",
                     t_wid: Int = 6,
                     w_len: Int = 5)
 
@@ -28,6 +29,9 @@ object UserVTFirst {
       opt[String]("out_fp")
         .text("")
         .action { (x, c) => c.copy(out_fp = x) }
+      opt[String]("fs_fp")
+        .text("")
+        .action { (x, c) => c.copy(fs_fp = x) }
       opt[Int]("t_wid")
         .text("")
         .action { (x, c) => c.copy(t_wid = x) }
@@ -52,23 +56,24 @@ object UserVTFirst {
     }
     val sc = new SparkContext(conf)
 
-    val f_len = 1
     val vvd = RawPoint.read(sc, p.vvd_fp, Int.MaxValue)
-    val cdd = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, Array.fill[Double](f_len)(0.0)))
-    val fs = RawPoint.filter(vvd, p.t_wid, p.w_len).map {
-      p =>
-        val t = (p.wid - 1) * (7 * 24 * 60) + (p.did - 1) * (24 * 60) + p.hid * 60 + p.mid
-        (p.uid, t)
-    }.reduceByKey(math.min).map {
-      case (uid: String, t: Int) =>
-        (uid, Array(t.toDouble))
-    }
+    val label_0 = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, 0))
+    val label_1 = vvd.filter(_.wid == p.t_wid).map(_.uid).distinct().map((_, 1))
 
-    val fs_all = cdd.leftOuterJoin(fs).map {
+    val label = label_0.leftOuterJoin(label_1).map {
       e =>
         (e._1, e._2._2.getOrElse(e._2._1))
     }
 
-    FeatureOpts.save(fs_all, p.out_fp)
+    val fs = sc.textFile(p.fs_fp).map {
+      line =>
+        val Array(uid, fs) = line.split("\t")
+        (uid, fs.split(",").zipWithIndex.map(e => s"${e._2 + 1}:${e._1}").mkString(" "))
+    }
+
+    label.join(fs).map {
+      e =>
+        s"${e._1}\t${e._2._1}\t${e._2._2}"
+    }.saveAsObjectFile(p.out_fp)
   }
 }

@@ -60,7 +60,7 @@ object FeatureMerge {
 
     Range(1, fs_arr.length).foreach {
       id =>
-        val fs_fp = p.fs_pt + s"${fs_arr(id)}.txt"
+        val fs_fp = p.fs_pt + s"${fs_arr(id)}_${p.t_wid}_${p.w_len}.txt"
         fs_all = FeatureOpts.merge(fs_all, FeatureOpts.load(sc, fs_fp))
     }
 
