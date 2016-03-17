@@ -1,7 +1,6 @@
-package com.houjp.tianyi.classification
+package com.houjp.tianyi.classification.feature
 
 import com.houjp.tianyi
-import com.houjp.tianyi.classification.feature.CandidateGenerator
 import com.houjp.tianyi.datastructure.RawPoint
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.{SparkContext, SparkConf}
@@ -11,7 +10,7 @@ object MyLibSVMGenerator {
 
   /** command line parameters */
   case class Params(vvd_fp: String = tianyi.project_pt + "/data/raw/video-visit-data.txt.small",
-                    out_fp: String = tianyi.project_pt + "/data/fs/mylibsvm_6_5.txt",
+                    out_fp: String = tianyi.project_pt + "/data/fs/mylibsvm_user-vt-first_user-vt-last_6_5.txt",
                     fs_fp: String = tianyi.project_pt + "/data/fs/user-vt-first_user-vt-last_6_5.txt",
                     t_wid: Int = 6,
                     w_len: Int = 5)
@@ -74,6 +73,6 @@ object MyLibSVMGenerator {
     label.join(fs).map {
       e =>
         s"${e._1}\t${e._2._1}\t${e._2._2}"
-    }.saveAsObjectFile(p.out_fp)
+    }.saveAsTextFile(p.out_fp)
   }
 }
