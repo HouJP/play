@@ -19,7 +19,7 @@ fi
 
 t_wid=$1
 w_len=$2
-fs_name=user-active-count_user-visit-count_user-vt-first_user-vt-last
+fs_name=$3
 vvd_fp=${HDFS_PROJECT_PT}/data/raw/video-visit-data.txt
 out_fp=${HDFS_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt
 fs_fp=${HDFS_PROJECT_PT}/data/fs/${fs_name}_${t_wid}_${w_len}.txt

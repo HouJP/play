@@ -20,7 +20,7 @@ fi
 t_wid=$1
 w_len=$2
 fs_pt=${HDFS_PROJECT_PT}/data/fs/
-fs_name=user-active-count_user-visit-count_user-vt-first_user-vt-last
+fs_name=$3
 
 hdfs dfs -rmr ${fs_pt}/${fs_name}.txt
 
