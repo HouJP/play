@@ -12,7 +12,9 @@ object FeatureMerge {
 
   /** command line parameters */
   case class Params(fs_pt: String = tianyi.project_pt + "/data/fs/",
-                    fs_name: String = "user-vt-first_user-vt-last")
+                    fs_name: String = "user-vt-first_user-vt-last",
+                    t_wid: Int = 6,
+                    w_len: Int = 5)
 
   def main(args: Array[String]) {
     Logger.getLogger("org").setLevel(Level.WARN)
@@ -27,6 +29,12 @@ object FeatureMerge {
       opt[String]("fs_name")
         .text("")
         .action { (x, c) => c.copy(fs_name = x) }
+      opt[Int]("t_wid")
+        .text("")
+        .action { (x, c) => c.copy(t_wid = x) }
+      opt[Int]("w_len")
+        .text("")
+        .action { (x, c) => c.copy(w_len = x) }
       help("help").text("prints this usage text")
     }
 
@@ -47,7 +55,7 @@ object FeatureMerge {
 
     val fs_arr = p.fs_name.split("_")
 
-    val fs_fp = p.fs_pt + s"/${fs_arr(0)}.txt"
+    val fs_fp = p.fs_pt + s"/${fs_arr(0)}_${p.t_wid}_${p.w_len}.txt"
     var fs_all = FeatureOpts.load(sc, fs_fp)
 
     Range(1, fs_arr.length).foreach {
@@ -56,7 +64,7 @@ object FeatureMerge {
         fs_all = FeatureOpts.merge(fs_all, FeatureOpts.load(sc, fs_fp))
     }
 
-    val out_fp = p.fs_pt + s"${p.fs_name}.txt"
+    val out_fp = p.fs_pt + s"${p.fs_name}_${p.t_wid}_${p.w_len}.txt"
     fs_all.map {
       case (uid: String, fs: String) =>
         s"$uid\t$fs"

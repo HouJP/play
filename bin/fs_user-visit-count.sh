@@ -12,10 +12,15 @@ cd "${PATH_NOW}"
 source ../conf/shell.conf
 cd "${PATH_PRE}"
 
+if [ 2 -ne $# ]; then
+	echo "[ERROR] Usage: cmd <t_wid> <w_len>"
+	exit 255
+fi
+
+t_wid=$1
+w_len=$2
 vvd_fp=${HDFS_PROJECT_PT}/data/raw/video-visit-data.txt
-out_fp=${HDFS_PROJECT_PT}/data/fs/user-visit-count.txt
-t_wid=6
-w_len=5
+out_fp=${HDFS_PROJECT_PT}/data/fs/user-visit-count_${t_wid}_${w_len}.txt
 
 hdfs dfs -rmr $out_fp
 

@@ -12,6 +12,13 @@ cd "${PATH_NOW}"
 source ../conf/shell.conf
 cd "${PATH_PRE}"
 
+if [ 2 -ne $# ]; then
+	echo "[ERROR] Usage: cmd <t_wid> <w_len>"
+	exit 255
+fi
+
+t_wid=$1
+w_len=$2
 fs_pt=${HDFS_PROJECT_PT}/data/fs/
 fs_name=user-active-count_user-visit-count_user-vt-first_user-vt-last
 
@@ -24,7 +31,7 @@ spark-submit \
 	${LOCAL_JAR_FP} \
 	--fs_pt ${fs_pt} \
 	--fs_name ${fs_name} 
-	
+
 if [ 0 -eq $? ]; then
 	echo "[INFO] $class success."
 else
