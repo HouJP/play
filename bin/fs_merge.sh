@@ -30,7 +30,9 @@ spark-submit \
 	--class $class \
 	${LOCAL_JAR_FP} \
 	--fs_pt ${fs_pt} \
-	--fs_name ${fs_name} 
+	--fs_name ${fs_name} \
+	--t_wid ${t_wid} \
+	--w_len ${w_len}
 
 if [ 0 -eq $? ]; then
 	echo "[INFO] $class success."
