@@ -6,18 +6,23 @@
 #########################################################################
 #! /bin/bash
 
+PATH_PRE="`pwd`"
+PATH_NOW="`dirname $0`"
+cd "${PATH_NOW}"
+source ../conf/shell.conf
+cd "${PATH_PRE}"
 
 function run() {
 	local t_wid=$1
 	local w_len=$2
 	local fs_name=$3
 
-	./fs_user-active-count.sh ${t_wid} ${w_len}
-	./fs_user-visit-count.sh ${t_wid} ${w_len}
-	./fs_user-vt-first.sh ${t_wid} ${w_len}
-	./fs_user-vt-last.sh ${t_wid} ${w_len}
-	./fs_merge.sh ${t_wid} ${w_len} ${fs_name}
-	./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name}
+	#./fs_user-active-count.sh ${t_wid} ${w_len}
+	#./fs_user-visit-count.sh ${t_wid} ${w_len}
+	#./fs_user-vt-first.sh ${t_wid} ${w_len}
+	#./fs_user-vt-last.sh ${t_wid} ${w_len}
+	#./fs_merge.sh ${t_wid} ${w_len} ${fs_name}
+	#./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name}
 
 	hdfs dfs -getmerge 	${HDFS_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt \
 						${LOCAL_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt
