@@ -65,6 +65,7 @@ object FeatureMerge {
     }
 
     val out_fp = p.fs_pt + s"${p.fs_name}_${p.t_wid}_${p.w_len}.txt"
+    println(s"[INFO] out_fp=$out_fp")
     fs_all.map {
       case (uid: String, fs: String) =>
         s"$uid\t$fs"
