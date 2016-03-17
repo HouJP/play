@@ -12,8 +12,8 @@ cd "${PATH_NOW}"
 source ../conf/shell.conf
 cd "${PATH_PRE}"
 
-if [ 2 -ne $# ]; then
-	echo "[ERROR] Usage: cmd <t_wid> <w_len>"
+if [ 3 -ne $# ]; then
+	echo "[ERROR] Usage: cmd <t_wid> <w_len> <fs_name>"
 	exit 255
 fi
 
