@@ -13,15 +13,15 @@ source ../conf/shell.conf
 cd "${PATH_PRE}"
 
 if [ 3 -ne $# ]; then
-	echo "[ERROR] Usage: out_smooth <ans_pre_fp> <ans_aft_fp> <smooth_ans_rec_fp>"
+	echo "[ERROR] Usage: out_smooth <ans_pre_fp> <ans_aft_fp> <smooth_rec_ans_fp>"
 	exit 255
 fi
 
 ans_pre_fp=$1
 ans_aft_fp=$2
-smooth_ans_rec_fp=$3
+smooth_rec_ans_fp=$3
 
-hdfs dfs -rmr $smooth_ans_rec_fp
+hdfs dfs -rmr $smooth_rec_ans_fp
 
 class=com.houjp.tianyi.regression.out.DaySmoothRecover
 
@@ -30,7 +30,7 @@ spark-submit \
 	${LOCAL_JAR_FP} \
 	--ans_pre_fp ${ans_pre_fp} \
 	--ans_aft_fp ${ans_aft_fp} \
-	--smooth_ans_rec_fp ${smooth_ans_rec_fp}
+	--smooth_rec_ans_fp ${smooth_rec_ans_fp}
 
 if [ 0 -eq $? ]; then
 	echo "[INFO] $class success."
