@@ -28,7 +28,7 @@ object DaySmooth {
       help("help").text("prints this usage text")
     }
 
-    println("In main function ...")
+    println("[INFO] In main function ...")
 
     parser.parse(args, default_params) match {
       case Some(params) => run(params)
@@ -37,6 +37,7 @@ object DaySmooth {
   }
 
   def run(p: Params): Unit = {
+    println("[INFO] in run function ...")
     val conf = new SparkConf()
       .setAppName(s"tianyi-final day-smooth")
       .set("spark.hadoop.validateOutputSpecs", "false")

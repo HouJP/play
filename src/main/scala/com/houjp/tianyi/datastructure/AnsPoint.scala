@@ -17,6 +17,6 @@ object AnsPoint {
     aps.map {
       case (uid: String, v: Array[Double]) =>
         s"$uid\t${v.map(_ * scale).map(_.toInt).mkString(",")}"
-    }
+    }.saveAsTextFile(fp)
   }
 }
