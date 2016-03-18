@@ -32,27 +32,27 @@ object DaySmooth {
       case Some(params) => run(params)
       case None => System.exit(1)
     }
+  }
 
-    def run(p: Params): Unit = {
-      val conf = new SparkConf()
-        .setAppName(s"tianyi-final day-smooth")
-        .set("spark.hadoop.validateOutputSpecs", "false")
-      if (tianyi.is_local) {
-        conf.setMaster("local[4]")
-      }
-      val sc = new SparkContext(conf)
-
-      val aps = AnsPoint.read(sc, p.ans_fp).map {
-        case (uid: String, v: Array[Double]) =>
-          val v_10 = Array.fill[Double](10)(0.0)
-          Range(0, 70).foreach {
-            id =>
-              v_10(id % 10) += v(id)
-          }
-          (uid, v_10 ++ v_10 ++ v_10 ++ v_10 ++ v_10 ++ v_10 ++ v_10)
-      }
-
-      AnsPoint.save(aps, p.smooth_ans_fp, 1)
+  def run(p: Params): Unit = {
+    val conf = new SparkConf()
+      .setAppName(s"tianyi-final day-smooth")
+      .set("spark.hadoop.validateOutputSpecs", "false")
+    if (tianyi.is_local) {
+      conf.setMaster("local[4]")
     }
+    val sc = new SparkContext(conf)
+
+    val aps = AnsPoint.read(sc, p.ans_fp).map {
+      case (uid: String, v: Array[Double]) =>
+        val v_10 = Array.fill[Double](10)(0.0)
+        Range(0, 70).foreach {
+          id =>
+            v_10(id % 10) += v(id)
+        }
+        (uid, v_10 ++ v_10 ++ v_10 ++ v_10 ++ v_10 ++ v_10 ++ v_10)
+    }
+
+    AnsPoint.save(aps, p.smooth_ans_fp, 1)
   }
 }
