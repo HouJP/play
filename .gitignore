@@ -3,3 +3,5 @@ data/
 target/
 project/
 submit.sh
+
+bin/bc_sklearn_gbdt.params
