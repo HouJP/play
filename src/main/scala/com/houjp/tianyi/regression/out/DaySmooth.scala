@@ -28,6 +28,8 @@ object DaySmooth {
       help("help").text("prints this usage text")
     }
 
+    println("In main function ...")
+
     parser.parse(args, default_params) match {
       case Some(params) => run(params)
       case None => System.exit(1)
