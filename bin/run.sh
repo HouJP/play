@@ -21,59 +21,59 @@ function run() {
 
 	./fs_user-active-count.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-active-count.sh ${t_wid} ${w_len} meet error!" | tee -a run.log
+		echo "[ERROR] ./fs_user-active-count.sh ${t_wid} ${w_len} meet error!"
 		return 255
 	else
-		echo "[INFO] ./fs_user-active-count.sh ${t_wid} ${w_len} success." | tee -a run.log
+		echo "[INFO] ./fs_user-active-count.sh ${t_wid} ${w_len} success." 
 	fi
 
 	./fs_user-visit-count.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-visit-count.sh ${t_wid} ${w_len} meet error!" | tee -a run.log
+		echo "[ERROR] ./fs_user-visit-count.sh ${t_wid} ${w_len} meet error!"
 		return 255
 	else
-		echo "[INFO] ./fs_user-visit-count.sh ${t_wid} ${w_len} success." | tee -a run.log
+		echo "[INFO] ./fs_user-visit-count.sh ${t_wid} ${w_len} success."
 	fi
 
 	./fs_user-vt-first.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-vt-first.sh ${t_wid} ${w_len} meet error!" | tee -a run.log
+		echo "[ERROR] ./fs_user-vt-first.sh ${t_wid} ${w_len} meet error!" 
 		return 255
 	else
-		echo "[INFO] ./fs_user-vt-first.sh ${t_wid} ${w_len} success." | tee -a run.log
+		echo "[INFO] ./fs_user-vt-first.sh ${t_wid} ${w_len} success." 
 	fi
 
 	./fs_user-vt-last.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-vt-last.sh ${t_wid} ${w_len} meet error!" | tee -a run.log
+		echo "[ERROR] ./fs_user-vt-last.sh ${t_wid} ${w_len} meet error!" 
 		return 255
 	else
-		echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success." | tee -a run.log
+		echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success."
 	fi
 
 	./fs_merge.sh ${t_wid} ${w_len} ${fs_name} 
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} meet error!" | tee -a run.log
+		echo "[ERROR] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} meet error!" 
 		return 255
 	else
-		echo "[INFO] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} success." | tee -a run.log
+		echo "[INFO] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} success."
 	fi
 
 	./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} 
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} meet error!" | tee -a run.log
+		echo "[ERROR] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} meet error!" 
 		return 255
 	else
-		echo "[INFO] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} success." | tee -a run.log
+		echo "[INFO] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} success." 
 	fi
 
 	hdfs dfs -getmerge 	${HDFS_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt \
 						${LOCAL_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt 
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] hdfs dfs -getmerge meet error!" | tee -a run.log
+		echo "[ERROR] hdfs dfs -getmerge meet error!"
 		return 255
 	else
-		echo "[INFO] hdfs dfs -getmerge success." | tee -a run.log
+		echo "[INFO] hdfs dfs -getmerge success."
 	fi
 }
 
