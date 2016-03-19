@@ -19,69 +19,69 @@ function generate_libsvm() {
 	local w_len=$2
 	local fs_name=$3
 
-	./fs_user-active-count.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-active-count.sh ${t_wid} ${w_len} meet error!"
-		return 255
-	else
-		echo "[INFO] ./fs_user-active-count.sh ${t_wid} ${w_len} success." 
-	fi
+	# ./fs_user-active-count.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-active-count.sh ${t_wid} ${w_len} meet error!"
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-active-count.sh ${t_wid} ${w_len} success." 
+	# fi
 
-	./fs_user-visit-count.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-visit-count.sh ${t_wid} ${w_len} meet error!"
-		return 255
-	else
-		echo "[INFO] ./fs_user-visit-count.sh ${t_wid} ${w_len} success."
-	fi
+	# ./fs_user-visit-count.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-visit-count.sh ${t_wid} ${w_len} meet error!"
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-visit-count.sh ${t_wid} ${w_len} success."
+	# fi
 
-	./fs_user-vt-first.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-vt-first.sh ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] ./fs_user-vt-first.sh ${t_wid} ${w_len} success." 
-	fi
+	# ./fs_user-vt-first.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-vt-first.sh ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-vt-first.sh ${t_wid} ${w_len} success." 
+	# fi
 
-	./fs_user-vt-last.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_user-vt-last.sh ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success."
-	fi
+	# ./fs_user-vt-last.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-vt-last.sh ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success."
+	# fi
 
-	sh fs_l1-label-number.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_l1-label-number ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] fs_l1-label-number ${t_wid} ${w_len} success."
-	fi
+	# sh fs_l1-label-number.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_l1-label-number ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_l1-label-number ${t_wid} ${w_len} success."
+	# fi
 
-	sh fs_l1-label-visit.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_l1-label-visit ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] fs_l1-label-vist ${t_wid} ${w_len} success."
-	fi
+	# sh fs_l1-label-visit.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_l1-label-visit ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_l1-label-vist ${t_wid} ${w_len} success."
+	# fi
 
-	sh fs_l1-label-visit-count.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_l1-label-visit-count ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] fs_l1-label-vist-count ${t_wid} ${w_len} success."
-	fi
+	# sh fs_l1-label-visit-count.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_l1-label-visit-count ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_l1-label-vist-count ${t_wid} ${w_len} success."
+	# fi
 
-	sh fs_l1-label-visit-rate.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_l1-label-visit-rate ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] fs_l1-label-vist-rate ${t_wid} ${w_len} success."
-	fi
+	# sh fs_l1-label-visit-rate.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_l1-label-visit-rate ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_l1-label-vist-rate ${t_wid} ${w_len} success."
+	# fi
 
 	# ------------------  丢弃 BEGIN ------------------------------------------
 	# sh fs_l1-label-visit-day-count.sh ${t_wid} ${w_len}
@@ -101,22 +101,22 @@ function generate_libsvm() {
 	# 	echo "[INFO] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} success."
 	# fi
 
-	# ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} 
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} success." 
-	# fi
+	./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} 
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} meet error!" 
+		return 255
+	else
+		echo "[INFO] ./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} success." 
+	fi
 
-	# hdfs dfs -getmerge 	${HDFS_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt \
-	# 					${LOCAL_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt 
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] hdfs dfs -getmerge meet error!"
-	# 	return 255
-	# else
-	# 	echo "[INFO] hdfs dfs -getmerge success."
-	# fi
+	hdfs dfs -getmerge 	${HDFS_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt \
+						${LOCAL_PROJECT_PT}/data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt 
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] hdfs dfs -getmerge meet error!"
+		return 255
+	else
+		echo "[INFO] hdfs dfs -getmerge success."
+	fi
 
 	# python fs_libsvm.py ../data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt ../data/fs/libsvm_${fs_name}_${t_wid}_${w_len}.txt
 }
