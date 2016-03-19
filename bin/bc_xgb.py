@@ -15,7 +15,7 @@ def run(train_fp, test_fp, params):
 	preds = model.predict(dtest)
 	y_test = dtest.get_label()
 
-	print preds
+	#print preds
 	
 	thresh = sorted(preds)[int((1.0 - params['rate']) * len(preds))]
 	print ('error=%f' % (  sum(1 for i in range(len(preds)) if int(preds[i]>thresh)!=y_test[i]) /float(len(preds))))
