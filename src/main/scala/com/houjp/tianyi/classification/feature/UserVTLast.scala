@@ -1,7 +1,7 @@
 package com.houjp.tianyi.classification.feature
 
+import com.houjp.common.FeatureOpts
 import com.houjp.tianyi
-import com.houjp.tianyi.classification.FeatureOpts
 import com.houjp.tianyi.datastructure.RawPoint
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.{SparkContext, SparkConf}
