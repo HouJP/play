@@ -12,7 +12,7 @@ cd "${PATH_NOW}"
 source ../conf/shell.conf
 cd "${PATH_PRE}"
 
-function run() {
+function generate_libsvm() {
 	rm -rf run.log
 
 	local t_wid=$1
@@ -51,12 +51,20 @@ function run() {
 	# 	echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success."
 	# fi
 
-	sh fs_l1-label-number.sh ${t_wid} ${w_len}
+	# sh fs_l1-label-number.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_l1-label-number ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_l1-label-number ${t_wid} ${w_len} success."
+	# fi
+
+	sh fs_l1-label-visit.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_l1-label-number ${t_wid} ${w_len} meet error!" 
+		echo "[ERROR] fs_l1-label-visit ${t_wid} ${w_len} meet error!" 
 		return 255
 	else
-		echo "[INFO] fs_l1-label-number ${t_wid} ${w_len} success."
+		echo "[INFO] fs_l1-label-vist ${t_wid} ${w_len} success."
 	fi
 
 	./fs_merge.sh ${t_wid} ${w_len} ${fs_name} 
@@ -83,24 +91,57 @@ function run() {
 	else
 		echo "[INFO] hdfs dfs -getmerge success."
 	fi
+
+	python fs_libsvm.py ../data/fs/mylibsvm_${fs_name}_${t_wid}_${w_len}.txt ../data/fs/libsvm_${fs_name}_${t_wid}_${w_len}.txt
 }
 
+function run() {
+	w_len=5
+	fs_name=s1-fs_l1-label-number_l1-label-visit
 
-w_len=5
-fs_name=s1-fs_l1-label-number
+	t_wid_train=6
+	generate_libsvm $t_wid_train $w_len $fs_name
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] generate_libsvm $t_wid_train $w_len $fs_name meet error!"
+		return 255
+	else
+		echo "[INFO] generate_libsvm $t_wid_train $w_len $fs_name success."
+	fi
 
-t_wid=6
+	t_wid_test=7
+	generate_libsvm $t_wid_test $w_len $fs_name
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] generate_libsvm $t_wid_test $w_len $fs_name meet error!"
+		return 255
+	else
+		echo "[INFO] generate_libsvm $t_wid_test $w_len $fs_name success."
+	fi
 
-run $t_wid $w_len $fs_name
-if [ 0 -ne $? ]; then
-	echo "[ERROR] run $t_wid $w_len $fs_name meet error!"
-	exit 255
-fi
+	python bc_xgb.py ../data/fs/libsvm_${fs_name}_${t_wid_train}_${w_len}.txt ../data/fs/libsvm_${fs_name}_${t_wid_test}_${w_len}.txt
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] bc_xgb $t_wid_train $t_wid_test $w_len $fs_name meet error!"
+		return 255
+	else
+		echo "[ERROR] bc_xgb $t_wid_train $t_wid_test $w_len $fs_name success."
+	fi
+}
 
-t_wid=7
+run
+# w_len=5
+# fs_name=s1-fs_l1-label-number_l1-label-visit
 
-run $t_wid $w_len $fs_name
-if [ 0 -ne $? ]; then
-	echo "[ERROR] run $t_wid $w_len $fs_name meet error!"
-	exit 255
-fi
+# t_wid=6
+
+# run $t_wid $w_len $fs_name
+# if [ 0 -ne $? ]; then
+# 	echo "[ERROR] run $t_wid $w_len $fs_name meet error!"
+# 	exit 255
+# fi
+
+# t_wid=7
+
+# run $t_wid $w_len $fs_name
+# if [ 0 -ne $? ]; then
+# 	echo "[ERROR] run $t_wid $w_len $fs_name meet error!"
+# 	exit 255
+# fi

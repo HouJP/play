@@ -1,21 +1,24 @@
 package com.houjp.tianyi.classification.feature
 
 import com.houjp.tianyi
-import com.houjp.tianyi.datastructure.RawPoint
+import com.houjp.tianyi.classification.FeatureOpts
+import com.houjp.tianyi.datastructure.{UBDPoint, RawPoint}
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}
 import scopt.OptionParser
 
-object MyLibSVMGenerator {
+object L1LabelVisit {
 
   /** command line parameters */
   case class Params(vvd_fp: String = tianyi.project_pt + "/data/raw/video-visit-data.txt.small",
-                    out_fp: String = tianyi.project_pt + "/data/fs/mylibsvm_user-vt-first_user-vt-last_6_5.txt",
-                    fs_fp: String = tianyi.project_pt + "/data/fs/user-vt-first_user-vt-last_6_5.txt",
+                    ubd_fp: String = tianyi.project_pt + "/data/raw/user-behavior-data.small",
+                    label_fp: String = tianyi.project_pt + "/data/stat/label_l1_index",
+                    out_fp: String = tianyi.project_pt + "/data/fs/l1-label-visit_6_5.txt",
                     t_wid: Int = 6,
                     w_len: Int = 5)
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     Logger.getLogger("org").setLevel(Level.WARN)
     Logger.getLogger("aka").setLevel(Level.WARN)
     val default_params = Params()
@@ -25,12 +28,15 @@ object MyLibSVMGenerator {
       opt[String]("vvd_fp")
         .text("")
         .action { (x, c) => c.copy(vvd_fp = x) }
+      opt[String]("ubd_fp")
+        .text("")
+        .action { (x, c) => c.copy(ubd_fp = x) }
+      opt[String]("label_fp")
+        .text("")
+        .action { (x, c) => c.copy(label_fp = x) }
       opt[String]("out_fp")
         .text("")
         .action { (x, c) => c.copy(out_fp = x) }
-      opt[String]("fs_fp")
-        .text("")
-        .action { (x, c) => c.copy(fs_fp = x) }
       opt[Int]("t_wid")
         .text("")
         .action { (x, c) => c.copy(t_wid = x) }
@@ -48,31 +54,39 @@ object MyLibSVMGenerator {
 
   def run(p: Params): Unit = {
     val conf = new SparkConf()
-      .setAppName(s"tianyi-final mylibsvm-generator")
+      .setAppName(s"tianyi-final l1-label-visit")
       .set("spark.hadoop.validateOutputSpecs", "false")
     if (tianyi.is_local) {
       conf.setMaster("local[4]")
     }
     val sc = new SparkContext(conf)
 
+    val f_len = 17
     val vvd = RawPoint.read(sc, p.vvd_fp, Int.MaxValue)
-    val label_0 = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, 0))
-    val label_1 = vvd.filter(_.wid == p.t_wid).map(_.uid).distinct().map((_, 1))
+    val cdd: RDD[(String, Array[Double])] = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, Array.fill[Double](f_len)(0.0)))
 
-    val label = label_0.leftOuterJoin(label_1).map {
+    val ubd = UBDPoint.read(sc, p.ubd_fp, p.label_fp, Int.MaxValue)
+    val fs: RDD[(String, Array[Double])] = UBDPoint.filter(ubd, p.t_wid, p.w_len).map {
+      p =>
+        (p.uid, p.l1)
+    }.distinct().map {
+      case (uid: String, l1: Int) =>
+        (uid, Array[Int](l1))
+    }.reduceByKey(_++_).map {
+      case (uid: String, v: Array[Int]) =>
+        val f = Array.fill[Double](f_len)(0.0)
+        v.foreach {
+          id =>
+            f(id) = 1.0
+        }
+        (uid, f)
+    }
+
+    val fs_all = cdd.leftOuterJoin(fs).map {
       e =>
         (e._1, e._2._2.getOrElse(e._2._1))
     }
 
-    val fs = sc.textFile(p.fs_fp).map {
-      line =>
-        val Array(uid, fs) = line.split("\t")
-        (uid, fs.split(",").zipWithIndex.map(e => s"${e._2 + 1}:${e._1}").mkString(" "))
-    }
-
-    label.join(fs).map {
-      e =>
-        s"${e._1}\t${e._2._1}\t${e._2._2}"
-    }.saveAsTextFile(p.out_fp)
+    FeatureOpts.save(fs_all, p.out_fp)
   }
 }
