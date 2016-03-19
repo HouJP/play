@@ -58,7 +58,7 @@ object FeatureMerge {
     }
     val hjp_fs = sc.textFile(p.hjp_fp).map {
       line =>
-        val Array(uid, fs_s) = line.split(",")
+        val Array(uid, fs_s) = line.split("\t")
         (uid, fs_s.split(",").map(_.toDouble))
     }
     val hjp_fs_len = hjp_fs.take(1)(0)._2.length
