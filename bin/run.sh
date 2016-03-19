@@ -67,12 +67,20 @@ function generate_libsvm() {
 	# 	echo "[INFO] fs_l1-label-vist ${t_wid} ${w_len} success."
 	# fi
 
-	sh fs_l1-label-visit-count.sh ${t_wid} ${w_len}
+	# sh fs_l1-label-visit-count.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_l1-label-visit-count ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_l1-label-vist-count ${t_wid} ${w_len} success."
+	# fi
+
+	sh fs_l1-label-visit-rate.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_l1-label-visit-count ${t_wid} ${w_len} meet error!" 
+		echo "[ERROR] fs_l1-label-visit-rate ${t_wid} ${w_len} meet error!" 
 		return 255
 	else
-		echo "[INFO] fs_l1-label-vist-count ${t_wid} ${w_len} success."
+		echo "[INFO] fs_l1-label-vist-rate ${t_wid} ${w_len} success."
 	fi
 
 	./fs_merge.sh ${t_wid} ${w_len} ${fs_name} 
@@ -105,7 +113,7 @@ function generate_libsvm() {
 
 function run() {
 	w_len=5
-	fs_name=s1-fs_l1-label-number_l1-label-visit_l1-label-visit-count
+	fs_name=s1-fs_l1-label-number_l1-label-visit-rate
 
 	t_wid_train=6
 	generate_libsvm $t_wid_train $w_len $fs_name
