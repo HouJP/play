@@ -1,32 +1,21 @@
 import sys
 import numpy as np
-from sklearn.datasets import load_svmlight_file
-from sklearn.ensemble import GradientBoostingClassifier
+import xgboost as xgb
 import json
 
 def run(train_fp, test_fp, params):
-	X_train, y_train = load_svmlight_file(train_fp)
-	X_test, y_test = load_svmlight_file(test_fp)
+	dtrain = xgb.DMatrix(train_fp)
+	dtest = xgb.DMatrix(test_fp)
 
 	print params
 
-	model = GradientBoostingClassifier( \
-		n_estimators = params['n_estimators'], \
-		learning_rate = params['learning_rate'], \
-		max_depth = params['max_depth'],  \
-		min_samples_split = params['min_samples_split'], \
-		min_samples_leaf = params['min_samples_leaf'], \
-		min_weight_fraction_leaf = params['min_weight_fraction_leaf'], \
-		subsample = params['subsample'], \
-		max_features = params['max_features'], \
-		random_state = params['random_state'] \
-		).fit(X_train.toarray(), y_train)
+	watchlist = [(dtest, 'eval'), (dtrain, 'train')]
+	model = xgb.train(params, dtrain, params['n_estimators'], watchlist)
 
-	preds_01 = model.predict_proba(X_test.toarray())
-	preds = []
-	for i in preds_01:
-		preds.append(i[1])
-	#print preds
+	preds = model.predict(dtest)
+	y_test = dtest.get_label()
+
+	print preds
 	
 	thresh = sorted(preds)[int((1.0 - params['rate']) * len(preds))]
 	print ('error=%f' % (  sum(1 for i in range(len(preds)) if int(preds[i]>thresh)!=y_test[i]) /float(len(preds))))
@@ -49,19 +38,19 @@ def run(train_fp, test_fp, params):
 
 
 if __name__ == "__main__":
-	print("[INFO] bc_sklearn_gbdt ...")
+	print("[INFO] bc_xgb ...")
 
 	if (3 != len(sys.argv)):
-		print "[ERROR] Usage: bc_sklearn_gbdt <train_fp> <test_fp>"
+		print "[ERROR] Usage: bc_xgb <train_fp> <test_fp>"
 		sys.exit(1)
 
 	train_fp = sys.argv[1]
 	test_fp = sys.argv[2]
 
 	params = {}
-	with open("bc_sklearn_gbdt.params", 'r') as f:
+	with open("bc_xgb.params", 'r') as f:
 		params = json.load(f)
 
 	run(train_fp, test_fp, params)
 
-	print("[INFO] bc_sklearn_gbdt done.")
+	print("[INFO] bc_xgb done.")

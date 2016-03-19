@@ -5,3 +5,4 @@ project/
 submit.sh
 
 bin/bc_sklearn_gbdt.params
+bin/bc_xgb.params
