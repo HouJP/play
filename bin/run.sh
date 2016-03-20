@@ -18,6 +18,7 @@ function generate_libsvm() {
 	local t_wid=$1
 	local w_len=$2
 	local fs_name=$3
+	local f_name=
 
 	# ./fs_user-active-count.sh ${t_wid} ${w_len}
 	# if [ 0 -ne $? ]; then
@@ -93,13 +94,22 @@ function generate_libsvm() {
 	# fi
 	# ------------------  丢弃 END -------------------------------------------
 
-	# ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} 
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} success."
-	# fi
+	f_name=l1-label-day-gcnt
+	sh fs_${f_name}.sh ${t_wid} ${w_len}
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] fs_${f_name} ${t_wid} ${w_len} meet error!" 
+		return 255
+	else
+		echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
+	fi
+
+	./fs_merge.sh ${t_wid} ${w_len} ${fs_name} 
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} meet error!" 
+		return 255
+	else
+		echo "[INFO] ./fs_merge.sh ${t_wid} ${w_len} ${fs_name} success."
+	fi
 
 	./fs_mylibsvm.sh ${t_wid} ${w_len} ${fs_name} 
 	if [ 0 -ne $? ]; then
@@ -123,43 +133,44 @@ function generate_libsvm() {
 
 function run() {
 	w_len=5
-	fs_name=l1-label-number_l1-label-visit_l1-label-visit-count_l1-label-visit-rate
+	#fs_name=l1-label-number_l1-label-visit_l1-label-visit-count_l1-label-visit-rate
+	fs_name=s1-fs_l1-label-day-gcnt
 
-	# t_wid_train=6
-	# generate_libsvm $t_wid_train $w_len $fs_name
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] generate_libsvm $t_wid_train $w_len $fs_name meet error!"
-	# 	return 255
-	# else
-	# 	echo "[INFO] generate_libsvm $t_wid_train $w_len $fs_name success."
-	# fi
-
-	# t_wid_test=7
-	# generate_libsvm $t_wid_test $w_len $fs_name
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] generate_libsvm $t_wid_test $w_len $fs_name meet error!"
-	# 	return 255
-	# else
-	# 	echo "[INFO] generate_libsvm $t_wid_test $w_len $fs_name success."
-	# fi
-
-	t_wid_online=8
-	generate_libsvm $t_wid_online $w_len $fs_name
+	t_wid_train=6
+	generate_libsvm $t_wid_train $w_len $fs_name
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] generate_libsvm $t_wid_online $w_len $fs_name meet error!"
+		echo "[ERROR] generate_libsvm $t_wid_train $w_len $fs_name meet error!"
 		return 255
 	else
-		echo "[INFO] generate_libsvm $t_wid_online $w_len $fs_name success."
+		echo "[INFO] generate_libsvm $t_wid_train $w_len $fs_name success."
 	fi
 
+	t_wid_test=7
+	generate_libsvm $t_wid_test $w_len $fs_name
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] generate_libsvm $t_wid_test $w_len $fs_name meet error!"
+		return 255
+	else
+		echo "[INFO] generate_libsvm $t_wid_test $w_len $fs_name success."
+	fi
 
-	# python bc_xgb.py ../data/fs/libsvm_${fs_name}_${t_wid_train}_${w_len}.txt ../data/fs/libsvm_${fs_name}_${t_wid_test}_${w_len}.txt
+	# t_wid_online=8
+	# generate_libsvm $t_wid_online $w_len $fs_name
 	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] bc_xgb $t_wid_train $t_wid_test $w_len $fs_name meet error!"
+	# 	echo "[ERROR] generate_libsvm $t_wid_online $w_len $fs_name meet error!"
 	# 	return 255
 	# else
-	# 	echo "[INFO] bc_xgb $t_wid_train $t_wid_test $w_len $fs_name success."
+	# 	echo "[INFO] generate_libsvm $t_wid_online $w_len $fs_name success."
 	# fi
+
+
+	python bc_xgb.py ../data/fs/libsvm_${fs_name}_${t_wid_train}_${w_len}.txt ../data/fs/libsvm_${fs_name}_${t_wid_test}_${w_len}.txt
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] bc_xgb $t_wid_train $t_wid_test $w_len $fs_name meet error!"
+		return 255
+	else
+		echo "[INFO] bc_xgb $t_wid_train $t_wid_test $w_len $fs_name success."
+	fi
 }
 
 run
