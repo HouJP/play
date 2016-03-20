@@ -39,4 +39,5 @@ if [ 0 -eq $? ]; then
 	echo "[INFO] $class success."
 else
 	echo "[ERROR] $class meet error!"
+	exit 255
 fi
