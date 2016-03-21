@@ -17,6 +17,70 @@ function generate_features() {
 	local w_len=$2
 	local f_name=
 
+	# ./fs_user-active-count.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-active-count.sh ${t_wid} ${w_len} meet error!"
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-active-count.sh ${t_wid} ${w_len} success." 
+	# fi
+
+	# ./fs_user-visit-count.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-visit-count.sh ${t_wid} ${w_len} meet error!"
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-visit-count.sh ${t_wid} ${w_len} success."
+	# fi
+
+	# ./fs_user-vt-first.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-vt-first.sh ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-vt-first.sh ${t_wid} ${w_len} success." 
+	# fi
+
+	# ./fs_user-vt-last.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_user-vt-last.sh ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success."
+	# fi
+
+	sh fs_l1-label-number.sh ${t_wid} ${w_len}
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] fs_l1-label-number ${t_wid} ${w_len} meet error!" 
+		return 255
+	else
+		echo "[INFO] fs_l1-label-number ${t_wid} ${w_len} success."
+	fi
+
+	sh fs_l1-label-visit.sh ${t_wid} ${w_len}
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] fs_l1-label-visit ${t_wid} ${w_len} meet error!" 
+		return 255
+	else
+		echo "[INFO] fs_l1-label-vist ${t_wid} ${w_len} success."
+	fi
+
+	sh fs_l1-label-visit-count.sh ${t_wid} ${w_len}
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] fs_l1-label-visit-count ${t_wid} ${w_len} meet error!" 
+		return 255
+	else
+		echo "[INFO] fs_l1-label-vist-count ${t_wid} ${w_len} success."
+	fi
+
+	sh fs_l1-label-visit-rate.sh ${t_wid} ${w_len}
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] fs_l1-label-visit-rate ${t_wid} ${w_len} meet error!" 
+		return 255
+	else
+		echo "[INFO] fs_l1-label-vist-rate ${t_wid} ${w_len} success."
+	fi
+
 	f_name=l1-15-label-hour-gcnt
 	sh fs_${f_name}.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
@@ -51,70 +115,6 @@ function generate_libsvm() {
 	else
 		echo "[INFO] generate_features ${t_wid} ${w_len} success."
 	fi
-
-	# ./fs_user-active-count.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_user-active-count.sh ${t_wid} ${w_len} meet error!"
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_user-active-count.sh ${t_wid} ${w_len} success." 
-	# fi
-
-	# ./fs_user-visit-count.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_user-visit-count.sh ${t_wid} ${w_len} meet error!"
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_user-visit-count.sh ${t_wid} ${w_len} success."
-	# fi
-
-	# ./fs_user-vt-first.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_user-vt-first.sh ${t_wid} ${w_len} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_user-vt-first.sh ${t_wid} ${w_len} success." 
-	# fi
-
-	# ./fs_user-vt-last.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_user-vt-last.sh ${t_wid} ${w_len} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_user-vt-last.sh ${t_wid} ${w_len} success."
-	# fi
-
-	# sh fs_l1-label-number.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] fs_l1-label-number ${t_wid} ${w_len} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] fs_l1-label-number ${t_wid} ${w_len} success."
-	# fi
-
-	# sh fs_l1-label-visit.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] fs_l1-label-visit ${t_wid} ${w_len} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] fs_l1-label-vist ${t_wid} ${w_len} success."
-	# fi
-
-	# sh fs_l1-label-visit-count.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] fs_l1-label-visit-count ${t_wid} ${w_len} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] fs_l1-label-vist-count ${t_wid} ${w_len} success."
-	# fi
-
-	# sh fs_l1-label-visit-rate.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] fs_l1-label-visit-rate ${t_wid} ${w_len} meet error!" 
-	# 	return 255
-	# else
-	# 	echo "[INFO] fs_l1-label-vist-rate ${t_wid} ${w_len} success."
-	# fi
 
 	# ------------------  丢弃 BEGIN ------------------------------------------
 	# sh fs_l1-label-visit-day-count.sh ${t_wid} ${w_len}
