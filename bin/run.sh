@@ -99,12 +99,21 @@ function generate_features() {
 	# 	echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
 	# fi
 
-	./fs_hour-gcnt.sh ${t_wid} ${w_len}
+	# ./fs_hour-gcnt.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] ./fs_hour-gcnt.sh ${t_wid} ${w_len} meet error!"
+	# 	return 255
+	# else
+	# 	echo "[INFO] ./fs_hour-gcnt.sh ${t_wid} ${w_len} success." 
+	# fi
+
+	f_name=l1-damped-sum
+	sh fs_${f_name}.sh ${t_wid} ${w_len}
 	if [ 0 -ne $? ]; then
-		echo "[ERROR] ./fs_hour-gcnt.sh ${t_wid} ${w_len} meet error!"
+		echo "[ERROR] fs_${f_name} ${t_wid} ${w_len} meet error!" 
 		return 255
 	else
-		echo "[INFO] ./fs_hour-gcnt.sh ${t_wid} ${w_len} success." 
+		echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
 	fi
 }
 
@@ -174,7 +183,7 @@ function generate_libsvm() {
 function run() {
 	w_len=5
 	#fs_name=l1-label-number_l1-label-visit_l1-label-visit-count_l1-label-visit-rate
-	fs_name=s1-fs_l1-label-number_hour-gcnt
+	fs_name=s1-fs_l1-label-number_l1-damped-sum
 
 	t_wid_train=6
 	generate_libsvm $t_wid_train $w_len $fs_name
