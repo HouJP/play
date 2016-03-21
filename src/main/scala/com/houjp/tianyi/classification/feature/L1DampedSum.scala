@@ -110,7 +110,7 @@ object L1DampedSum {
       }
 
       arr.foreach { case ((d: Int, v: Int), cnt: Double) =>
-        rec(d - 1)(v - 1) = cnt
+        rec(d - 1)(v) = cnt
       }
 
       val sum = rec.map(_.sum).sum
