@@ -265,7 +265,7 @@ function generate_libsvm() {
 function run() {
 	w_len=5
 	#fs_name=l1-label-number_l1-label-visit_l1-label-visit-count_l1-label-visit-rate
-	fs_name=s1-fs_l1-label-number_continue-min-dis
+	fs_name=s1-fs_continue-min-dis
 
 	t_wid_train=6
 	generate_libsvm $t_wid_train $w_len $fs_name
