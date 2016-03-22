@@ -99,13 +99,13 @@ function generate_features() {
 	# 	echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
 	# fi
 
-	# ./fs_hour-gcnt.sh ${t_wid} ${w_len}
-	# if [ 0 -ne $? ]; then
-	# 	echo "[ERROR] ./fs_hour-gcnt.sh ${t_wid} ${w_len} meet error!"
-	# 	return 255
-	# else
-	# 	echo "[INFO] ./fs_hour-gcnt.sh ${t_wid} ${w_len} success." 
-	# fi
+	./fs_hour-gcnt.sh ${t_wid} ${w_len}
+	if [ 0 -ne $? ]; then
+		echo "[ERROR] ./fs_hour-gcnt.sh ${t_wid} ${w_len} meet error!"
+		return 255
+	else
+		echo "[INFO] ./fs_hour-gcnt.sh ${t_wid} ${w_len} success." 
+	fi
 
 	# ------------------  丢弃 BEGIN ------------------------------------------
 	# f_name=l1-damped-sum
@@ -118,14 +118,14 @@ function generate_features() {
 	# fi
 	# ------------------  丢弃 END ------------------------------------------
 
-	f_name=l1-15-damped-sum
-	sh fs_${f_name}.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_${f_name} ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
-	fi
+	# f_name=l1-15-damped-sum
+	# sh fs_${f_name}.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_${f_name} ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
+	# fi
 }
 
 function generate_libsvm() {
