@@ -8,12 +8,12 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}
 import scopt.OptionParser
 
-object L115AdjacentContinueVisit {
+object L115ContinueVisit {
   /** command line parameters */
   case class Params(vvd_fp: String = tianyi.project_pt + "/data/raw/video-visit-data.txt.small",
                     ubd_fp: String = tianyi.project_pt + "/data/raw/user-behavior-data.small",
                     label_fp: String = tianyi.project_pt + "/data/stat/label_l1_index",
-                    out_fp: String = tianyi.project_pt + "/data/fs/l1-15-adjacent-continue-visit_6_5.txt",
+                    out_fp: String = tianyi.project_pt + "/data/fs/l1-15-continue-visit_6_5.txt",
                     t_wid: Int = 6,
                     w_len: Int = 5)
 
@@ -81,17 +81,19 @@ object L115AdjacentContinueVisit {
             flag(id) = true
         }
         val fs = Array.fill[Double](f_len)(0.0)
+        val rec = Array.fill[Double](5)(0.0)
         if (flag(0)) {
-          fs(0) = 1.0
+          rec(0) = 1.0
         }
-        var break = false
         Range(1, 5).foreach {
           id =>
-            if ((fs(0) > 1e-6) && flag(id) && !break) {
-              fs(0) += 1.0
-            } else {
-              break = true
+            if (flag(id)) {
+              rec(id) = rec(id - 1) + 1.0
             }
+        }
+        Range(0, 5).foreach {
+          id =>
+            fs(0) = math.max(fs(0), rec(id))
         }
         (uid, fs)
     }
