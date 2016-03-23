@@ -196,14 +196,14 @@ function generate_features() {
 	# 	echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
 	# fi
 
-	f_name=continue-day-dis
-	sh fs_${f_name}.sh ${t_wid} ${w_len}
-	if [ 0 -ne $? ]; then
-		echo "[ERROR] fs_${f_name} ${t_wid} ${w_len} meet error!" 
-		return 255
-	else
-		echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
-	fi
+	# f_name=continue-day-dis
+	# sh fs_${f_name}.sh ${t_wid} ${w_len}
+	# if [ 0 -ne $? ]; then
+	# 	echo "[ERROR] fs_${f_name} ${t_wid} ${w_len} meet error!" 
+	# 	return 255
+	# else
+	# 	echo "[INFO] fs_${f_name} ${t_wid} ${w_len} success."
+	# fi
 	# ------------------- 03/23 END -------------------------------------
 }
 
@@ -272,8 +272,8 @@ function generate_libsvm() {
 
 function run() {
 	w_len=5
-	#fs_name=l1-label-number_l1-label-visit_l1-label-visit-count_l1-label-visit-rate
-	fs_name=s1-fs_continue-day-dis
+	
+	fs_name=s1-fs_l1-label-number
 
 	t_wid_train=6
 	generate_libsvm $t_wid_train $w_len $fs_name

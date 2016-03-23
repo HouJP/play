@@ -6,30 +6,42 @@ def run(in_fp_1, in_fp_2, out_fp, size):
 
 	uids = set()
 	uid1 = []
+	lb1 = []
 	uid2 = []
+	lb2 = []
 	ans = []
 	value = []
 	max_n = 250000
 
+	cor = 0
+
 	for line in in_1:
 		line = line.strip()
 		subs = line.split("\t")
-		uid1.append(subs[0])
+		uid1.append(subs[1])
+		lb1.append(int(subs[2]))
 	for line in in_2:
 		line = line.strip()
 		subs = line.split("\t")
-		uid2.append(subs[0])
+		uid2.append(subs[1])
+		lb2.append(int(subs[2]))
 
 	for i in range(max_n):
 		if (size <= len(ans)):
 			print "[INFO] finish merge sort, at line " + str(i)
+			print "[INFO] correct = %d" % cor
+			print "[INFO] precision = %f" % (1.0 * cor / size)
 			break
 		if (uid1[i] in uids):
 			ans.append(uid1[i])
+			if (1 == lb1[i]):
+				cor += 1
 		else:
 			uids.add(uid1[i])
 		if (uid2[i] in uids):
 			ans.append(uid2[i])
+			if (1 == lb2[i]):
+				cor += 1
 		else:
 			uids.add(uid2[i])
 
