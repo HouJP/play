@@ -32,12 +32,10 @@ function run {
 
 	class=com.houjp.ijcai16.preprocess.Split
 
-	data_pt=$1
-
 	spark-submit \
 		--class $class
 		${LOCAL_JAR_FP} \
-		--data_pt $data_pt
+		--data_pt ${HDFS_DATA_PT}
 
 	if [ 0 -ne $? ]; then
 		echo "[ERROR] $class meet error!"
@@ -55,10 +53,9 @@ function run {
 
 }
 
-if [ 1 -ne $# ]; then
-	echo "[ERROR] Usage: splitting <data_pt>"
+if [ 0 -ne $# ]; then
+	echo "[ERROR] Usage: splitting"
 	exit 255
 fi
 
-data_pt=$1
-run $data_pt
+run 
