@@ -17,7 +17,7 @@ function run {
 	#check path
 	echo "HDFS_DATA_PT=${HDFS_DATA_PT}? yes/No"
 	read ack
-	if [ "ack"x -ne "$ack"x ]; then
+	if [ "ack"x == "$ack"x ]; then
 		echo "HDFS_DATA_PT($HDFS_DATA_PT) wrong!"
 		return 255
 	fi
