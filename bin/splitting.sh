@@ -30,7 +30,7 @@ function run {
 	hdfs dfs -rmr ${HDFS_DATA_PT}/data-sets-split/ijcai2016_taobao_p1
 	hdfs dfs -rmr ${HDFS_DATA_PT}/data-sets-split/ijcai2016_taobao_p2
 
-	class=com.houjp.ijcai16.preprocess.Splitting
+	class=com.houjp.ijcai16.preprocess.Split
 
 	data_pt=$1
 

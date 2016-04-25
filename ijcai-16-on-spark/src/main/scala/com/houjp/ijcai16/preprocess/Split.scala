@@ -6,7 +6,7 @@ import org.apache.log4j.Logger
 import org.apache.spark.{SparkContext, SparkConf}
 import scopt.OptionParser
 
-object Splitting {
+object Split {
 
   /** command line parameters */
   case class Params(data_pt: String = "")
