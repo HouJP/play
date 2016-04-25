@@ -1,1 +1,7 @@
 data/*
+
+.idea/
+project/
+target/
+
+conf/
