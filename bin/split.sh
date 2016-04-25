@@ -33,7 +33,7 @@ function run {
 	class=com.houjp.ijcai16.preprocess.Split
 
 	spark-submit \
-		--class $class
+		--class $class \
 		${LOCAL_JAR_FP} \
 		--data_pt ${HDFS_DATA_PT}
 
