@@ -23,8 +23,8 @@ function run {
 	fi
 
 	local month_id=$1
-	local hdfs_input_fp=$HDFS_DATA_PT/data-sets/ijcai2016_koubei_train
-	#local hdfs_input_fp=$HDFS_DATA_PT/data-sets-split/ijcai2016_koubei_train_p2
+	#local hdfs_input_fp=$HDFS_DATA_PT/data-sets/ijcai2016_koubei_train
+	local hdfs_input_fp=$HDFS_DATA_PT/data-sets-split/ijcai2016_koubei_train_p2
 	local hdfs_output_fp=$HDFS_DATA_PT/ans/std_ans
 
 	# rm output
