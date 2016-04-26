@@ -36,7 +36,7 @@ function run {
 		${LOCAL_JAR_FP} \
 		--input_fp ${hdfs_input_fp} \
 		--output_fp ${hdfs_output_fp} \
-		--month_sid $month_id 
+		--month_id $month_id 
 
 	if [ 0 -ne $? ]; then
 		echo "[ERROR] $class meet error!"
