@@ -48,7 +48,7 @@ function run {
 	fi
 }
 
-if [ 1 -ne $# ]; then
+if [ 4 -ne $# ]; then
 	echo "[ERROR] Usage: generate_std_ans <input_fp> <output_fp> <month_sid> <month_len>"
 	exit 255
 fi
