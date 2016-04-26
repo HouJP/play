@@ -54,4 +54,4 @@ if [ 3 -ne $# ]; then
 	exit 255
 fi
 
-run $3
+run $1 $2 $3
