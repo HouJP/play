@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 data/
 .idea/
 target/
@@ -6,3 +7,12 @@ submit.sh
 
 bin/bc_sklearn_gbdt.params
 bin/bc_xgb.params
+=======
+data/*
+
+.idea/
+project/
+target/
+
+conf/
+>>>>>>> e333b4615c7fc3ffc4cf58124fc4ed7ecdb22a1c
