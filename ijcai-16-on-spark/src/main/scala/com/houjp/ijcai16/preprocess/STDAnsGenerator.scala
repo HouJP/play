@@ -9,7 +9,8 @@ import scopt.OptionParser
 object STDAnsGenerator {
 
   /** command line parameters */
-  case class Params(input_fp: String = "",
+  case class Params(train_fp: String = "",
+                    filter_fp: String = "",
                     output_fp: String = "",
                     month_sid: Int = 11,
                     month_len: Int = 1)
@@ -23,10 +24,14 @@ object STDAnsGenerator {
 
     val parser = new OptionParser[Params]("BDA") {
       head("BDA", "1.0")
-      opt[String]("input_fp")
+      opt[String]("train_fp")
         .required()
-        .text("The path of input data file")
-        .action { (x, c) => c.copy(input_fp = x) }
+        .text("The path of training data file")
+        .action { (x, c) => c.copy(train_fp = x) }
+      opt[String]("filter_fp")
+        .required()
+        .text("The path of filter file")
+        .action { (x, c) => c.copy(filter_fp = x) }
       opt[String]("output_fp")
         .required()
         .text("The path of output data file")
@@ -56,12 +61,26 @@ object STDAnsGenerator {
     }
     val sc = new SparkContext(conf)
 
-    val tuple = KoubeiTrain.load(sc, params.input_fp).filter(e => (e.month >= params.month_sid) && (e.month <= params.month_sid + params.month_len - 1)).map {
+    val tuple = KoubeiTrain.load(sc, params.train_fp).filter(e => (e.month >= params.month_sid) && (e.month <= params.month_sid + params.month_len - 1)).map {
       e =>
         (e.user_id, e.merchant_id, e.location_id)
     }.distinct()
 
-    val ans = Ans.tupleToAns(tuple)
+    val filter = sc.textFile(params.filter_fp).map {
+      s =>
+        val Array(user_id, location_id) = s.split(",")
+        ((user_id, location_id), 1)
+    }
+
+    val tuple_filtered = tuple.map {
+      case (user_id: String, merchant_id: String, location_id: String) =>
+        ((user_id, location_id), merchant_id)
+    }.join(filter).map {
+      case ((user_id: String, location_id: String), (merchant_id: String, _)) =>
+        (user_id, merchant_id, location_id)
+    }
+
+    val ans = Ans.tupleToAns(tuple_filtered)
 
     ans.saveAsTextFile(params.output_fp)
   }
