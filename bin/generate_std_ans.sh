@@ -22,10 +22,10 @@ function run {
 		return 255
 	fi
 
-	local month_id=$1
-	#local hdfs_input_fp=$HDFS_DATA_PT/data-sets/ijcai2016_koubei_train
-	local hdfs_input_fp=$HDFS_DATA_PT/data-sets-split/ijcai2016_koubei_train_p2
-	local hdfs_output_fp=$HDFS_DATA_PT/ans/std_ans
+	local hdfs_input_fp=$1
+	local hdfs_output_fp=$2
+	local month_sid=$3
+	local month_len=$4
 
 	# rm output
 	hdfs dfs -rmr ${hdfs_output_fp}
@@ -37,7 +37,8 @@ function run {
 		${LOCAL_JAR_FP} \
 		--input_fp ${hdfs_input_fp} \
 		--output_fp ${hdfs_output_fp} \
-		--month_id $month_id
+		--month_sid $month_sid \
+		--month_len $month_len
 
 	if [ 0 -ne $? ]; then
 		echo "[ERROR] $class meet error!"
@@ -48,8 +49,8 @@ function run {
 }
 
 if [ 1 -ne $# ]; then
-	echo "[ERROR] Usage: generate_std_ans <month_id>"
+	echo "[ERROR] Usage: generate_std_ans <input_fp> <output_fp> <month_sid> <month_len>"
 	exit 255
 fi
 
-run $1
+run $1 $2 $3 $4

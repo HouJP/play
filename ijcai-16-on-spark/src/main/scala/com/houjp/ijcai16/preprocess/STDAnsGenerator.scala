@@ -11,7 +11,8 @@ object STDAnsGenerator {
   /** command line parameters */
   case class Params(input_fp: String = "",
                     output_fp: String = "",
-                    month_id: Int = 11)
+                    month_sid: Int = 11,
+                    month_len: Int = 1)
 
   /** Parse the command line parameters */
   def main(args: Array[String]) {
@@ -30,10 +31,14 @@ object STDAnsGenerator {
         .required()
         .text("The path of output data file")
         .action { (x, c) => c.copy(output_fp = x) }
-      opt[Int]("month_id")
+      opt[Int]("month_sid")
         .required()
-        .text("The id of month")
-        .action { (x, c) => c.copy(month_id = x) }
+        .text("The start id of month")
+        .action { (x, c) => c.copy(month_sid = x) }
+      opt[Int]("month_len")
+        .required()
+        .text("The len of month")
+        .action { (x, c) => c.copy(month_len = x) }
     }
 
     parser.parse(args, default_params) match {
@@ -51,7 +56,7 @@ object STDAnsGenerator {
     }
     val sc = new SparkContext(conf)
 
-    val tuple = KoubeiTrain.load(sc, params.input_fp).filter(e => e.month == params.month_id).map {
+    val tuple = KoubeiTrain.load(sc, params.input_fp).filter(e => (e.month >= params.month_sid) && (e.month <= params.month_sid + params.month_len - 1)).map {
       e =>
         (e.user_id, e.merchant_id, e.location_id)
     }.distinct()
