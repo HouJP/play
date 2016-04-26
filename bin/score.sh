@@ -16,11 +16,11 @@ function run {
 
 	#check path
 	echo "HDFS_DATA_PT=${HDFS_DATA_PT}? yes/No"
-	read ack
-	if [ "yes"x != "$ack"x ]; then
-		echo "HDFS_DATA_PT($HDFS_DATA_PT) wrong!"
-		return 255
-	fi
+	# read ack
+	# if [ "yes"x != "$ack"x ]; then
+	# 	echo "HDFS_DATA_PT($HDFS_DATA_PT) wrong!"
+	# 	return 255
+	# fi
 
 	local time_stamp=`date +%s`
 	((time_stamp = time_stamp % 1000))
