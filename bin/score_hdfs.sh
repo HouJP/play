@@ -48,9 +48,10 @@ function run {
 	fi
 }
 
-if [ 1 -ne $# ]; then
-	echo "[ERROR] Usage: score <user_ans_fp>"
+if [ 3 -ne $# ]; then
+	echo "[ERROR] Usage: score <user_ans_fp> <std_ans_fp> <merchant_info_fp>"
+	echo "e.g. ./score.sh /user/houjp/play/data/ans/base_p2_11 /user/houjp/play/data/ans/std_ans /user/houjp/play/data/data-sets/ijcai2016_merchant_info"
 	exit 255
 fi
 
-run $1
+run $3
