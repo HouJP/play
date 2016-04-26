@@ -63,7 +63,7 @@ object L1LabelVisitDayCount {
     val sc = new SparkContext(conf)
 
     val f_len = 17
-    val vvd = RawPoint.read(sc, p.vvd_fp, Int.MaxValue)
+    val vvd = RawPoint.load(sc, p.vvd_fp, Int.MaxValue)
     val cdd: RDD[(String, Array[Double])] = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, Array.fill[Double](f_len)(0.0)))
 
     val ubd = UBDPoint.read(sc, p.ubd_fp, p.label_fp, Int.MaxValue)

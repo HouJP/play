@@ -45,13 +45,13 @@ object RawPoint {
   }
 
   /**
-    * Read RawPoint from disk.
+    * load RawPoint from disk.
     *
     * @param sc
     * @param fp
     * @return
     */
-  def read(sc: SparkContext, fp: String, max: Int): RDD[RawPoint] = {
+  def load(sc: SparkContext, fp: String, max: Int): RDD[RawPoint] = {
     sc.textFile(fp).map(s =>RawPoint.parse(s, max))
   }
 }

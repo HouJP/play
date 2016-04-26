@@ -55,7 +55,7 @@ object MyLibSVMGenerator {
     }
     val sc = new SparkContext(conf)
 
-    val vvd = RawPoint.read(sc, p.vvd_fp, Int.MaxValue)
+    val vvd = RawPoint.load(sc, p.vvd_fp, Int.MaxValue)
     val label_0 = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, 0))
     val label_1 = vvd.filter(_.wid == p.t_wid).map(_.uid).distinct().map((_, 1))
 

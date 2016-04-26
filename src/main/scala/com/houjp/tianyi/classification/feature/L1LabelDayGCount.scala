@@ -63,7 +63,7 @@ object L1LabelDayGCount {
     val step = 5
     val base = Array(1.0, 2.0, 7.0, 14.0, 35.0)
     val f_len = 17 * step
-    val vvd = RawPoint.read(sc, p.vvd_fp, Int.MaxValue)
+    val vvd = RawPoint.load(sc, p.vvd_fp, Int.MaxValue)
     val cdd: RDD[(String, Array[Double])] = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, Array.fill[Double](f_len)(0.0)))
 
     val ubd = UBDPoint.read(sc, p.ubd_fp, p.label_fp, Int.MaxValue)

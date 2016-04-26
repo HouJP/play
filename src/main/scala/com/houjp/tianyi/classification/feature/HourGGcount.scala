@@ -54,7 +54,7 @@ object HourGGcount {
 
     val base = Array(180, 300, 720, 1440)
     val f_len = 4
-    val vvd = RawPoint.read(sc, p.vvd_fp, Int.MaxValue)
+    val vvd = RawPoint.load(sc, p.vvd_fp, Int.MaxValue)
     val cdd = CandidateGenerator.run(vvd, p.t_wid, p.w_len).map((_, Array.fill[Double](f_len)(0.0)))
 
     val fs = vvd.filter(e => (e.wid == p.t_wid - 1) && (e.did == 7)).map {
