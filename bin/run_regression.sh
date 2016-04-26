@@ -12,4 +12,4 @@ cd "${PATH_NOW}"
 source ../conf/shell.conf
 cd "${PATH_PRE}"
 
-./fs_AvgGap ${HDFS_PROJECT_PT}/data/raw/video-visit-data.txt ${HDFS_PROJECT_PT}/data/fs/fs_AvgGap_6_5 6 5
+./fs_AvgGap.sh ${HDFS_PROJECT_PT}/data/raw/video-visit-data.txt ${HDFS_PROJECT_PT}/data/fs/fs_AvgGap_6_5 6 5
