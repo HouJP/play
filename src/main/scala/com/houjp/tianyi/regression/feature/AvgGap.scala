@@ -52,6 +52,7 @@ object AvgGap {
     val sc = new SparkContext(conf)
 
     val vvd = RawPoint.load(sc, params.vvd_fp, Int.MaxValue)
+    vvd.
 
     RawPoint.filter(vvd, params.w_tid, params.w_len).map(e => (e.uid, e.vid, e.wid, e.did)).distinct().map {
       case (uid: String, vid: Int, _, _) =>
