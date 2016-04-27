@@ -35,3 +35,5 @@ if [ 4 -ne $# ]; then
 	echo "[ERROR] Usage: compare <a1_fp> <a2_fp> <std_fp> <out_fp>"
 	exit 255
 fi
+
+run $1 $2 $3 $4
