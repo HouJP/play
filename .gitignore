@@ -3,6 +3,7 @@ data/
 target/
 project/
 submit.sh
+conf/
 
 bin/bc_sklearn_gbdt.params
 bin/bc_xgb.params
