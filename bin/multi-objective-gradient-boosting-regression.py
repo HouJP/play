@@ -77,7 +77,7 @@ def load_libsvm_files(mid, Xs, ys):
 		else:
 			for i in range(0, n):
 				ys[i].append(y[i])
-		print "[%s] [INFO] load %s done." % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), fp)
+		log.write("[%s] [INFO] load %s done.\n" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), fp))
 	return n
 
 def train_predict(train_id, test_id):
@@ -104,7 +104,7 @@ def train_predict(train_id, test_id):
 	for i in range(0, n_test):
 		vs_test.append([unit for j in range(10)])
 	# print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
-	print "%s,%d,%f,%f" % (t_now(), 0, mean_cos_similarity(ys_train, vs_train, n_train), mean_cos_similarity(ys_test, vs_test, n_test))
+	log.write("%s,%d,%f,%f\n" % (t_now(), 0, mean_cos_similarity(ys_train, vs_train, n_train), mean_cos_similarity(ys_test, vs_test, n_test)))
 
 	# generate labels before iter#1
 	ls_train = []
@@ -135,7 +135,7 @@ def train_predict(train_id, test_id):
 
 		# print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
 		# print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
-		print "%s,%d,%f,%f" % (t_now(), iter + 1, mean_cos_similarity(ys_train, vs_train, n_train), mean_cos_similarity(ys_test, vs_test, n_test))
+		log.write("%s,%d,%f,%f\n" % (t_now(), iter + 1, mean_cos_similarity(ys_train, vs_train, n_train), mean_cos_similarity(ys_test, vs_test, n_test)))
 
 		# print "[%s] [INFO] iter#%d done." % (t_now(), iter)
 
@@ -149,12 +149,16 @@ def run(train_id, test_id):
 if __name__ == "__main__":
 	print "[%s] [INFO] multi-objective gradient boosting regression ..." % t_now()
 
-	if (3 != len(sys.argv)):
+	if (4 != len(sys.argv)):
 		print "[%s] [ERROR]: check parameters!" % t_now()
 		sys.exit(1)
 
 	train_id = sys.argv[1]
 	test_id = sys.argv[2]
+	log_fp = sys.argv[3]
+
+	# log file
+	log = open(log_fp, 'w')
 
 	env = {}
 	with open("../conf/py.conf", 'r') as f:
@@ -163,9 +167,10 @@ if __name__ == "__main__":
 	params = {}
 	with open("../conf/multi-objective-gradient-boosting-regression.params") as f:
 		params = json.load(f)
-	print "[%s] [INFO] params: " % t_now()
-	print params
+	log.write("[%s] [INFO] params: %s\n" % (t_now(), str(params)))
 
 	run(train_id, test_id)
 
-	print "[%s] [INFO] multi-objective gradient boosting regression." % t_now()
+	log.close()
+
+	print "[%s] [INFO] multi-objective gradient boosting regression done" % t_now()
