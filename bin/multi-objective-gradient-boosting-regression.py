@@ -98,12 +98,13 @@ def train_predict(train_id, test_id):
 	vs_train = []
 	for i in range(0, n_train):
 		vs_train.append([unit for j in range(10)])
-	print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
+	# print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
 	# generate values before iter#1 for testing dataset
 	vs_test = []
 	for i in range(0, n_test):
 		vs_test.append([unit for j in range(10)])
-	print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
+	# print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
+	print "%s,%d,%f,%f" % (t_now(), 0, mean_cos_similarity(ys_train, vs_train, n_train), mean_cos_similarity(ys_test, vs_test, n_test))
 
 	# generate labels before iter#1
 	ls_train = []
@@ -111,13 +112,13 @@ def train_predict(train_id, test_id):
 		ls_train.append([0.0 for j in range(10)])
 
 	for iter in range(params['n_round']):
-		print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
+		# print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
 
 		cal_gradient(ys_train, vs_train, ls_train, n_train)
-		print "[%s] [INFO] iter#%d: calculate gradient done." % (t_now(), iter)		
+		# print "[%s] [INFO] iter#%d: calculate gradient done." % (t_now(), iter)		
 	
 		for j in range(10):
-			print "[%s] [INFO] iter#%d, model#%d ..." % (t_now(), iter, j)
+			# print "[%s] [INFO] iter#%d, model#%d ..." % (t_now(), iter, j)
 			l = np.array([ls_train[i][j] for i in range(n_train)])
 			clf = Ridge(alpha = params['alpha'])
 			clf.fit(Xs_train[j], l)
@@ -130,12 +131,13 @@ def train_predict(train_id, test_id):
 			for i in range(n_test):
 				vs_test[i][j] += params['learn_rate'] * pred_test[i]
 
-			print "[%s] [INFO] iter#%d, model#%d done." % (t_now(), iter, j)
+			# print "[%s] [INFO] iter#%d, model#%d done." % (t_now(), iter, j)
 
-		print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
-		print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
+		# print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
+		# print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
+		print "%s,%d,%f,%f" % (t_now(), iter + 1, mean_cos_similarity(ys_train, vs_train, n_train), mean_cos_similarity(ys_test, vs_test, n_test))
 
-		print "[%s] [INFO] iter#%d done." % (t_now(), iter)
+		# print "[%s] [INFO] iter#%d done." % (t_now(), iter)
 
 	return 0
 
