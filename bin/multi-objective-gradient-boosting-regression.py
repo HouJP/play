@@ -164,6 +164,8 @@ if __name__ == "__main__":
 	with open("../conf/multi-objective-gradient-boosting-regression.params") as f:
 		params = json.load(f)
 
+	print "[%s] [INFO] ready \n" % t_now()
+
 	run(train_id, test_id)
 
 	print "[%s] [INFO] multi-objective gradient boosting regression." % t_now()
