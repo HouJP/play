@@ -163,7 +163,8 @@ if __name__ == "__main__":
 	params = {}
 	with open("../conf/multi-objective-gradient-boosting-regression.params") as f:
 		params = json.load(f)
-	print "[%s] [INFO] params: " + str(params) % t_now()
+	print "[%s] [INFO] params: " % t_now()
+	print params
 
 	run(train_id, test_id)
 
