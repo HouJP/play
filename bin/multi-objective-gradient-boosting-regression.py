@@ -63,7 +63,7 @@ def cal_gradient(ys, vs, ls, n):
 def load_libsvm_files(mid, Xs, ys):
 	n = 0
 	for i in range(1, 11): 
-		fp = "%s/data/fs/v%d_fs_%s_byweek.libsvm.small" % (env['project_pt'], i, mid) # test
+		fp = "%s/data/fs/v%d_fs_%s_byweek.%s" % (env['project_pt'], i, mid, env['file_suffix']) # test
 		X, y = load_svmlight_file(fp)
 		Xs.append(X)
 		if (0 == n):
@@ -118,7 +118,7 @@ def train_predict(train_id, test_id):
 			clf.fit(Xs_train[j], l)
 			# predict for training dataset
 			pred = clf.predict(Xs_train[j])
-			
+
 			# predict for testing dataset
 			pred = clf.predict(Xs_test[j])
 
