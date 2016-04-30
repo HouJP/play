@@ -114,6 +114,7 @@ def train_predict(train_id, test_id):
 		print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
 
 		cal_gradient(ys_train, vs_train, ls_train, n_train)
+		print "[%s] [INFO] iter#%d: calculate gradient done." % (t_now(), iter)		
 	
 		for j in range(10):
 			print "[%s] [INFO] iter#%d, model#%d ..." % (t_now(), iter, j)
