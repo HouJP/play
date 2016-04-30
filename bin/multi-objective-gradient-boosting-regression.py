@@ -6,6 +6,10 @@ import numpy as np
 import sys
 import json
 import math
+import time
+
+def t_now():
+	return time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
 
 def inner_product(v1, v2):
 	ss = 0.0
@@ -50,7 +54,7 @@ def cal_gradient(ys, vs, ls, n):
 		a = squared_sum(ys[i])
 		b = squared_sum(vs[i])
 		c = inner_product(ys[i], vs[i])
-		# print "[INFO] a=%f, b=%f, c=%f" % (a, b, c)
+		# print "[%s] [INFO] a=%f, b=%f, c=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), a, b, c)
 
 		for j in range(10):
 			ls[i][j] = (-1.0) * math.pow(a, -0.5) * (c * math.pow(b, -1.5) * vs[i][j] - ys[i][j] * math.pow(b, -0.5))
@@ -73,7 +77,7 @@ def load_libsvm_files(mid, Xs, ys):
 		else:
 			for i in range(0, n):
 				ys[i].append(y[i])
-		print "[INFO] load %s done." % fp
+		print "[%s] [INFO] load %s done." % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), fp)
 	return n
 
 def train_predict(train_id, test_id):
@@ -94,12 +98,12 @@ def train_predict(train_id, test_id):
 	vs_train = []
 	for i in range(0, n_train):
 		vs_train.append([unit for j in range(10)])
-	print "[INFO] mean_cos_similarity(train)=%f" % mean_cos_similarity(ys_train, vs_train, n_train)
+	print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
 	# generate values before iter#1 for testing dataset
 	vs_test = []
 	for i in range(0, n_test):
 		vs_test.append([unit for j in range(10)])
-	print "[INFO] mean_cos_similarity(test)=%f" % mean_cos_similarity(ys_test, vs_test, n_test)
+	print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
 
 	# generate labels before iter#1
 	ls_train = []
@@ -107,24 +111,30 @@ def train_predict(train_id, test_id):
 		ls_train.append([0.0 for j in range(10)])
 
 	for iter in range(params['n_round']):
-		print "[INFO] iter#%d ..." % iter
+		print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
 
 		cal_gradient(ys_train, vs_train, ls_train, n_train)
 	
 		for j in range(10):
-			print "[INFO] iter#%d, model#%d ..." % (iter, j)
+			print "[%s] [INFO] iter#%d, model#%d ..." % (t_now(), iter, j)
 			l = np.array([ls_train[i][j] for i in range(n_train)])
 			clf = Ridge(alpha = params['alpha'])
 			clf.fit(Xs_train[j], l)
 			# predict for training dataset
-			pred = clf.predict(Xs_train[j])
-
+			pred_train = clf.predict(Xs_train[j])
+			for i in range(n_train):
+				vs_train[i][j] += params['learn_rate'] * pred_train[i]
 			# predict for testing dataset
-			pred = clf.predict(Xs_test[j])
+			pred_test = clf.predict(Xs_test[j])
+			for i in range(n_test):
+				vs_test[i][j] += params['learn_rate'] * pred_test[i]
 
-			print "[INFO] iter#%d, model#%d done." % (iter, j)
+			print "[%s] [INFO] iter#%d, model#%d done." % (t_now(), iter, j)
 
-		print "[INFO] iter#%d done." % iter
+		print "[%s] [INFO] mean_cos_similarity(train)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_train, vs_train, n_train))
+		print "[%s] [INFO] mean_cos_similarity(test)=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), mean_cos_similarity(ys_test, vs_test, n_test))
+
+		print "[%s] [INFO] iter#%d done." % (t_now(), iter)
 
 	return 0
 
@@ -134,10 +144,10 @@ def run(train_id, test_id):
 	return 0
 
 if __name__ == "__main__":
-	print "[INFO] multi-objective gradient boosting regression ..."
+	print "[%s] [INFO] multi-objective gradient boosting regression ..." % t_now()
 
 	if (3 != len(sys.argv)):
-		print "[ERROR]: check parameters!"
+		print "[%s] [ERROR]: check parameters!" % t_now()
 		sys.exit(1)
 
 	train_id = sys.argv[1]
@@ -153,4 +163,4 @@ if __name__ == "__main__":
 
 	run(train_id, test_id)
 
-	print "[INFO] multi-objective gradient boosting regression."
+	print "[%s] [INFO] multi-objective gradient boosting regression." % t_now()
