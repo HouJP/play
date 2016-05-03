@@ -114,6 +114,11 @@ def train_predict(train_id, test_id):
 	for iter in range(params['n_round']):
 		# print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
 
+		# normalize predictions of training dataset
+		normalize(vs_train)
+		# normalize predictions of testing dataset
+		normalize(vs_test)
+
 		cal_gradient(ys_train, vs_train, ls_train, n_train)
 		# print "[%s] [INFO] iter#%d: calculate gradient done." % (t_now(), iter)		
 	
