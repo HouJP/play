@@ -28,10 +28,12 @@ def vlen(v):
 	return math.sqrt(squared_sum(v))
 
 def normalize(matrix):
+	print "[%s] [INFO] in normalize ..." % t_now()
 	for i in range(len(matrix)):
 		l = vlen(matrix[i])
 		for j in range(len(matrix[i])):
 			matrix[i][j] /= l
+	print "[%s] [INFO] in normalize done" % t_now()
 
 	return
 
@@ -117,9 +119,9 @@ def train_predict(train_id, test_id):
 		# print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
 
 		# normalize predictions of training dataset
-		# normalize(vs_train)
+		normalize(vs_train)
 		# normalize predictions of testing dataset
-		# normalize(vs_test)
+		normalize(vs_test)
 
 		cal_gradient(ys_train, vs_train, ls_train, n_train)
 		# print "[%s] [INFO] iter#%d: calculate gradient done." % (t_now(), iter)		
