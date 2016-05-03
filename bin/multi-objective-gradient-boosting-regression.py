@@ -50,6 +50,7 @@ def mean_cos_similarity(m1, m2, n):
 	return ans / n
 
 def cal_gradient(ys, vs, ls, n):
+	print "[%s] [INFO] in cal_gradient ..." % t_now()
 	for i in range(n):
 		a = squared_sum(ys[i])
 		b = squared_sum(vs[i])
@@ -59,6 +60,7 @@ def cal_gradient(ys, vs, ls, n):
 		for j in range(10):
 			ls[i][j] = (-1.0) * math.pow(a, -0.5) * (c * math.pow(b, -1.5) * vs[i][j] - ys[i][j] * math.pow(b, -0.5))
 
+	print "[%s] [INFO] in cal_gradient done" % t_now()
 
 	return
 
