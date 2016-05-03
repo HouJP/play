@@ -1,7 +1,7 @@
 #! /usr/bin/python
 
-from sklearn.linear_model import Ridge  
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.datasets import load_svmlight_file
 import numpy as np  
 import sys
 import json
