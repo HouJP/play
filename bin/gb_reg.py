@@ -118,10 +118,10 @@ def train_predict(train_id, test_id):
 		clf = ensemble.GradientBoostingRegressor(**params)
 		clf.fit(Xs_train[i].toarray(), l)
 		print "[%s] [INFO] %d model training done" % (t_now(), i)
-		preds_train = clf.staged_predict(Xs_train[i])
+		preds_train = clf.staged_predict(Xs_train[i].toarray())
 		ans_train.append([item for item in preds_train])
 		print "[%s] [INFO] %d model predict for training data set done" % (t_now(), i)
-		preds_test = clf.staged_predict(Xs_test[i])
+		preds_test = clf.staged_predict(Xs_test[i].toarray())
 		ans_test.append([item for item in preds_test])
 		print "[%s] [INFO] %d model predict for testing data set done" % (t_now(), i)
 
