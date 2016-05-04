@@ -1,6 +1,6 @@
 #! /usr/bin/python
 
-from sklearn.tree import DecisionTreeRegressor
+from sklearn import ensemble
 from sklearn.datasets import load_svmlight_file
 import numpy as np  
 import sys
