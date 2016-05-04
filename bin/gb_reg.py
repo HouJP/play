@@ -151,7 +151,7 @@ if __name__ == "__main__":
 		env = json.load(f)
 
 	params = {}
-	with open("../conf/gb_reg.params") as f:
+	with open("../conf/gb_reg.params", 'r') as f:
 		params = json.load(f)
 	print "[%s] [INFO] params: %s\n" % (t_now(), str(params))
 
