@@ -116,7 +116,7 @@ def train_predict(train_id, test_id):
 	for i in range(10):
 		l = np.array([ys_train[j][i] for j in range(n_train)])
 		clf = ensemble.GradientBoostingRegressor(**params)
-		clf.fit(Xs_train[i], l)
+		clf.fit(Xs_train[i].toarray(), l)
 		ans_train.append(clf.staged_predict(Xs_train[i]))
 		ans_test.append(clf.staged_predict(Xs_test[i]))
 
