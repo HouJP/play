@@ -54,14 +54,14 @@ def mean_cos_similarity(m1, m2, n):
 def cal_gradient(ys, vs, ls, n):
 	#print "[%s] [INFO] in cal_gradient ..." % t_now()
 	for i in range(n):
-		a = squared_sum(ys[i])
-		b = squared_sum(vs[i])
+		#a = squared_sum(ys[i])
+		#b = squared_sum(vs[i])
 		c = inner_product(ys[i], vs[i])
 		# print "[%s] [INFO] a=%f, b=%f, c=%f" % (time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time())), a, b, c)
 
 		for j in range(10):
-			#ls[i][j] = (-1.0) * (c * vs[i][j] - ys[i][j])
-			ls[i][j] = (-1.0) * math.pow(a, -0.5) * (c * math.pow(b, -1.5) * vs[i][j] - ys[i][j] * math.pow(b, -0.5))
+			ls[i][j] = (-1.0) * (c * vs[i][j] - ys[i][j])
+			#ls[i][j] = (-1.0) * math.pow(a, -0.5) * (c * math.pow(b, -1.5) * vs[i][j] - ys[i][j] * math.pow(b, -0.5))
 
 	#print "[%s] [INFO] in cal_gradient done" % t_now()
 
@@ -120,9 +120,9 @@ def train_predict(train_id, test_id):
 		# print "[%s] [INFO] iter#%d ..." % (t_now(), iter)
 
 		# normalize predictions of training dataset
-		# normalize(vs_train)
+		normalize(vs_train)
 		# normalize predictions of testing dataset
-		# normalize(vs_test)
+		normalize(vs_test)
 
 		cal_gradient(ys_train, vs_train, ls_train, n_train)
 		# print "[%s] [INFO] iter#%d: calculate gradient done." % (t_now(), iter)		
@@ -130,7 +130,7 @@ def train_predict(train_id, test_id):
 		for j in range(10):
 			# print "[%s] [INFO] iter#%d, model#%d ..." % (t_now(), iter, j)
 			l = np.array([ls_train[i][j] for i in range(n_train)])
-			clf = DecisionTreeRegressor(max_depth = params['max_depth'])
+			clf = DecisionTreeRegressor(max_depth = params['max_depth'], max_features = params['max_features'], min_samples_leaf = params['min_samples_leaf'])
 			clf.fit(Xs_train[j], l)
 			# predict for training dataset
 			pred_train = clf.predict(Xs_train[j])
