@@ -28,12 +28,12 @@ def vlen(v):
 	return math.sqrt(squared_sum(v))
 
 def normalize(matrix):
-	print "[%s] [INFO] in normalize ..." % t_now()
+	# print "[%s] [INFO] in normalize ..." % t_now()
 	for i in range(len(matrix)):
 		l = vlen(matrix[i])
 		for j in range(len(matrix[i])):
 			matrix[i][j] /= l
-	print "[%s] [INFO] in normalize done" % t_now()
+	# print "[%s] [INFO] in normalize done" % t_now()
 
 	return
 
