@@ -122,6 +122,7 @@ def train_predict(train_id, test_id):
 		print "[%s] [INFO] %d model training done" % (t_now(), i)
 		preds_train = clf.staged_predict(Xs_train[i].toarray())
 		ans_train.append([item for item in preds_train])
+		# print "len(ans_train[%d]) = %d" % (i, len(ans_train[i]))
 		print "[%s] [INFO] %d model predict for training data set done" % (t_now(), i)
 		preds_test = clf.staged_predict(Xs_test[i].toarray())
 		ans_test.append([item for item in preds_test])
@@ -132,11 +133,12 @@ def train_predict(train_id, test_id):
 	# predict for testing data set
 	for i in range(params['n_estimators']):
 		for j in range(10):
+			tmp = min(i, len(ans_train[j]) - 1)
 			for k in range(n_train):
-				#print "i=%d, j=%d, k=%d" % (i, j, k)
-				ps_train[k][j] = ans_train[j][i][k]
+				ps_train[k][j] = ans_train[j][tmp][k]
+			tmp = min(i, len(ans_test[j]) - 1)
 			for k in range(n_test):
-				ps_test[k][j] = ans_test[j][i][k]
+				ps_test[k][j] = ans_test[j][tmp][k]
 		print "%s,%d,%f,%f" % (t_now(), i + 1, mean_cos_similarity(ys_train, ps_train, n_train), mean_cos_similarity(ys_test, ps_test, n_test))
 
 	return 0
