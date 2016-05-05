@@ -117,7 +117,7 @@ def train_predict(train_id, test_id):
 	# fit models
 	for i in range(10):
 		l = np.array([ys_train[j][i] for j in range(n_train)])
-		clf = AdaBoostRegressor(DecisionTreeRegressor(max_depth=params['max_depth']), n_estimators=params['n_estimators'])
+		clf = AdaBoostRegressor(DecisionTreeRegressor(max_depth=params['max_depth']), n_estimators=params['n_estimators'], learning_rate=params['learning_rate'])
 		clf.fit(Xs_train[i].toarray(), l)
 		print "[%s] [INFO] %d model training done" % (t_now(), i)
 		preds_train = clf.staged_predict(Xs_train[i].toarray())
