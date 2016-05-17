@@ -178,7 +178,7 @@ def train_predict(train_id, test_id):
 				ps_train[k][j] = ans_train[j][i][k]
 			for k in range(n_test):
 				ps_test[k][j] = ans_test[j][i][k]
-		if (i == params['t_round'] - 1):
+		if (i == 300 - 1):
 			save_outcome(uids_test, ys_test, ps_test, n_test)
 		print "%s,%d,%f,%f" % (t_now(), i + 1, mean_cos_similarity(ys_train, ps_train, n_train), mean_cos_similarity(ys_test, ps_test, n_test))
 
